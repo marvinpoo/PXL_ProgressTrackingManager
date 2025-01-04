@@ -16,6 +16,7 @@ PXL Progress Tracking Manager (PXL PTM) is a powerful tool designed to manage dy
 
 ## Upcoming
 
+- **Spaces or Signs in name:** Finding a solution to be able to allow spaces, `-` or `_` in the tracker name.
 - **Streamlabs Chatbot Interface:** Making you able to change settings and manage your progress trackers through the interface.
 - **Capabilities:** Adding standard capabilities to the chat commands - Mod + Streamer.
 - **Capability Manager:** Making you able to change who can use what command.

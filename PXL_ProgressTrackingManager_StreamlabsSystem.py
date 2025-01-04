@@ -12,7 +12,7 @@ ScriptName = "PXL_PTM: Progress Tracking Manager"
 Website = "http://localhost:8000"
 Description = "This script tracks your progress and is capable of displaying it in a OBS Browser Source."
 Creator = "dotPixelmonarch"
-Version = "0.1.0-alpha"
+Version = "v0.1.0-alpha"
 
 # ---------------------------------------
 # Global Variables
