@@ -129,6 +129,16 @@ def Execute(data):
     global settings
 
     if data.IsChatMessage():
+        # Combine the trigger and parameters into a single command
+        raw_input = data.Message.strip()
+        log("[COMMAND] Received raw input: '{}'".format(raw_input))
+
+        # Ensure the command starts with the trigger
+        command_name = "!" + settings.get("command_name", "tracker")
+        command_alias = "!" + settings.get("command_alias", "")
+        if not (raw_input.startswith(command_name) or (command_alias and raw_input.startswith(command_alias))):
+            return
+
         # Check if user has the required role
         user = data.User
         allowed_roles = []
@@ -151,17 +161,6 @@ def Execute(data):
             log("[COMMAND] User '{}' does not have the required role.".format(user))
             Parent.SendStreamMessage(language_messages["no_permission"])  # Use the new language message
             return  # Explicitly return to stop further processing
-
-        # Combine the trigger and parameters into a single command
-        raw_input = data.Message.strip()
-        log("[COMMAND] Received raw input: '{}'".format(raw_input))
-
-        # Ensure the command starts with the trigger
-        command_name = "!" + settings.get("command_name", "tracker")
-        command_alias = "!" + settings.get("command_alias", "")
-        if not (raw_input.startswith(command_name) or (command_alias and raw_input.startswith(command_alias))):
-            log("[COMMAND] Invalid trigger.")
-            return
 
         # Remove the trigger and split the input into arguments
         if raw_input.startswith(command_name):
