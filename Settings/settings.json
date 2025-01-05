@@ -1,5 +1,11 @@
-{
-    "language": "en",
-    "allowed_roles": ["Moderator"],
-    "broadcaster_group": ["Broadcaster"]
+﻿{
+    "allowed_roles_regular": false, 
+    "allowed_roles_everyone": false, 
+    "allowed_roles_moderator": false, 
+    "allowed_roles_vip": false, 
+    "allowed_roles_subscriber": false, 
+    "language": "en", 
+    "broadcaster_group": [
+        "Broadcaster"
+    ]
 }

@@ -1,0 +1,49 @@
+﻿{
+    "output_file": "Settings/settings.json", 
+    "language": {
+        "group": "General", 
+        "tooltip": "Select the language for the script.", 
+        "label": "Language", 
+        "value": "en", 
+        "type": "dropdown", 
+        "items": [
+            "de", 
+            "en"
+        ]
+    },
+    "allowed_roles_everyone": {
+        "group": "Permissions", 
+        "tooltip": "Allow Everyone to use the commands.", 
+        "label": "Everyone", 
+        "value": false, 
+        "type": "checkbox"
+    },
+    "allowed_roles_regular": {
+        "group": "Permissions", 
+        "tooltip": "Allow Regulars to use the commands.", 
+        "label": "Regular", 
+        "value": false, 
+        "type": "checkbox"
+    },
+    "allowed_roles_subscriber": {
+        "group": "Permissions", 
+        "tooltip": "Allow Subscribers to use the commands.", 
+        "label": "Subscriber", 
+        "value": false, 
+        "type": "checkbox"
+    },
+    "allowed_roles_vip": {
+        "group": "Permissions", 
+        "tooltip": "Allow VIPs to use the commands.", 
+        "label": "VIP", 
+        "value": false, 
+        "type": "checkbox"
+    },
+    "allowed_roles_moderator": {
+        "group": "Permissions", 
+        "tooltip": "Allow Moderators to use the commands.", 
+        "label": "Moderator", 
+        "value": true, 
+        "type": "checkbox"
+    }
+}

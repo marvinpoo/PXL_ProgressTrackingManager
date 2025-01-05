@@ -36,6 +36,17 @@ def log(message):
     print(message)  # Ensures output to the chatbot console as well
 
 # ---------------------------------------
+# Reload Settings
+# ---------------------------------------
+def ReloadSettings(jsondata):
+    global settings
+    settings = json.loads(jsondata)
+    load_language(settings["language"])
+    with codecs.open(SETTINGS_FILE, "w", "utf-8-sig") as f:
+        json.dump(settings, f, indent=4, ensure_ascii=False)
+    log("[RELOAD] Settings reloaded and saved: {}".format(settings))
+
+# ---------------------------------------
 # Initialize Script
 # ---------------------------------------
 def Init():
@@ -50,7 +61,15 @@ def Init():
 
     # Load or create default settings
     if not os.path.isfile(SETTINGS_FILE):
-        default_settings = {"language": "en"}
+        default_settings = {
+            "language": "en",
+            "allowed_roles_everyone": False,
+            "allowed_roles_regular": False,
+            "allowed_roles_subscriber": False,
+            "allowed_roles_vip": False,
+            "allowed_roles_moderator": True,
+            "broadcaster_group": ["Broadcaster"]
+        }
         with codecs.open(SETTINGS_FILE, "w", "utf-8-sig") as f:
             json.dump(default_settings, f, indent=4, ensure_ascii=False)
     with codecs.open(SETTINGS_FILE, "r", "utf-8-sig") as f:
@@ -105,11 +124,22 @@ def generate_tracker_html(tracker_name, current_progress, max_value):
 # Execute Chat Commands
 # ---------------------------------------
 def Execute(data):
+    global settings
 
     if data.IsChatMessage():
         # Check if user has the required role
         user = data.User
-        allowed_roles = settings.get("allowed_roles", [])
+        allowed_roles = []
+        if settings.get("allowed_roles_everyone"):
+            allowed_roles.append("Everyone")
+        if settings.get("allowed_roles_regular"):
+            allowed_roles.append("Regular")
+        if settings.get("allowed_roles_subscriber"):
+            allowed_roles.append("Subscriber")
+        if settings.get("allowed_roles_vip"):
+            allowed_roles.append("VIP")
+        if settings.get("allowed_roles_moderator"):
+            allowed_roles.append("Moderator")
         broadcaster_group = settings.get("broadcaster_group", [])
         final_allowed_roles = set(allowed_roles + broadcaster_group)  # Merge and remove duplicates
 

@@ -11,6 +11,8 @@ PXL Progress Tracking Manager (PXL PTM) is a powerful tool designed to manage dy
 - **Localization Support**: Available in multiple languages (default: English).
 - **User-Friendly Commands**: Simple chat commands for tracker management.
 - **Customizable Design**: Fully configurable HTML for progress bar visuals.
+- **Capabilities:** Standard capabilities for the chat commands: Mod + Streamer.
+- **Capability Manager:** Ability to change the capabilities in `Settings/settings.json`.
 
 ---
 
@@ -18,8 +20,6 @@ PXL Progress Tracking Manager (PXL PTM) is a powerful tool designed to manage dy
 
 - **Spaces or Signs in name:** Finding a solution to be able to allow spaces, `-` or `_` in the tracker name.
 - **Streamlabs Chatbot Interface:** Making you able to change settings and manage your progress trackers through the interface.
-- **Capabilities:** Adding standard capabilities to the chat commands - Mod + Streamer.
-- **Capability Manager:** Making you able to change who can use what command.
 - **Rework html system:** I want to rework the html creation, so that you will be able to use the HTML template with variables in the URL instead of selecting single files.
 - **Designs:** Adding a batch of sample designs for you to choose from.
 - **Command Toggler:** Giving you the ability to toggle if the Bot is allowed to post responses in chat or not.
