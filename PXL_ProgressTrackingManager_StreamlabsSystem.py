@@ -136,7 +136,9 @@ def Execute(data):
         # Ensure the command starts with the trigger
         command_name = "!" + settings.get("command_name", "tracker")
         command_alias = "!" + settings.get("command_alias", "")
-        if not (raw_input.startswith(command_name) or (command_alias and raw_input.startswith(command_alias))):
+
+        # If the command is neither the main nor the alias, do nothing
+        if user_command not in [command_name, command_alias]:
             return
 
         # Remove the trigger and split the input into arguments
