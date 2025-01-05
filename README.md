@@ -13,6 +13,8 @@ PXL Progress Tracking Manager (PXL PTM) is a powerful tool designed to manage dy
 - **Customizable Design**: Fully configurable HTML for progress bar visuals.
 - **Capabilities:** Standard capabilities for the chat commands: Mod + Streamer.
 - **Capability Manager:** Ability to change the capabilities in `Settings/settings.json`.
+- **UI Settings:** Settings Sidebar for the script. You can manage the settings by simply clicking on the script and editing it in the sidebar.
+- **Command & Alias option:** Ability to change the command name and set a alias for the command.
 
 ---
 

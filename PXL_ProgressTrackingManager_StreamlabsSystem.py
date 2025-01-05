@@ -12,7 +12,7 @@ ScriptName = "PXL_PTM: Progress Tracking Manager"
 Website = "http://localhost:8000"
 Description = "This script tracks your progress and is capable of displaying it in a OBS Browser Source."
 Creator = "dotPixelmonarch"
-Version = "v0.1.0-alpha"
+Version = "v0.1.0-beta"
 
 # ---------------------------------------
 # Global Variables
@@ -68,7 +68,9 @@ def Init():
             "allowed_roles_subscriber": False,
             "allowed_roles_vip": False,
             "allowed_roles_moderator": True,
-            "broadcaster_group": ["Broadcaster"]
+            "broadcaster_group": ["Broadcaster"],
+            "command_name": "tracker",
+            "command_alias": ""
         }
         with codecs.open(SETTINGS_FILE, "w", "utf-8-sig") as f:
             json.dump(default_settings, f, indent=4, ensure_ascii=False)
@@ -154,20 +156,25 @@ def Execute(data):
         raw_input = data.Message.strip()
         log("[COMMAND] Received raw input: '{}'".format(raw_input))
 
-        # Ensure the command starts with the trigger "!tracker"
-        if not raw_input.startswith("!tracker"):
+        # Ensure the command starts with the trigger
+        command_name = "!" + settings.get("command_name", "tracker")
+        command_alias = "!" + settings.get("command_alias", "")
+        if not (raw_input.startswith(command_name) or (command_alias and raw_input.startswith(command_alias))):
             log("[COMMAND] Invalid trigger.")
             return
 
         # Remove the trigger and split the input into arguments
-        args = raw_input[len("!tracker"):].strip().split()
+        if raw_input.startswith(command_name):
+            args = raw_input[len(command_name):].strip().split()
+        else:
+            args = raw_input[len(command_alias):].strip().split()
         log("[COMMAND] Parsed arguments: {}".format(args))
 
         # Ensure at least two arguments are provided (tracker name, command)
         if len(args) < 2:
             log("[COMMAND] Invalid arguments. Less than 2 provided.")
             Parent.SendStreamMessage(
-                "Usage: !tracker [tracker_name] [command] [value]. Example: !tracker test new 100"
+                "Usage: {} [tracker_name] [command] [value]. Example: {} test new 100".format(command_name, command_name)
             )
             return
 

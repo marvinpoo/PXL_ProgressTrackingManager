@@ -1,8 +1,10 @@
 ﻿{
     "allowed_roles_regular": false, 
     "allowed_roles_everyone": false, 
+    "command_name": "tracker", 
     "allowed_roles_moderator": false, 
     "allowed_roles_vip": false, 
+    "command_alias": "", 
     "allowed_roles_subscriber": false, 
     "language": "en", 
     "broadcaster_group": [

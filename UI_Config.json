@@ -45,5 +45,19 @@
         "label": "Moderator", 
         "value": true, 
         "type": "checkbox"
+    },
+    "command_name": {
+        "group": "Commands",
+        "tooltip": "Change the command name. If unset, the command is 'tracker'.",
+        "label": "Command Name",
+        "value": "tracker",
+        "type": "textbox"
+    },
+    "command_alias": {
+        "group": "Commands",
+        "tooltip": "Set an optional alias for the command.",
+        "label": "Command Alias",
+        "value": "",
+        "type": "textbox"
     }
 }
