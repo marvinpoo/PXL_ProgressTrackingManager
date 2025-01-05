@@ -137,8 +137,15 @@ def Execute(data):
         command_name = "!" + settings.get("command_name", "tracker")
         command_alias = "!" + settings.get("command_alias", "")
 
-        # If the command is neither the main nor the alias, do nothing
-        if user_command not in [command_name, command_alias]:
+        log("[TEST] Checking: command_name={}, command_alias={}".format(command_name, command_alias))
+
+        split_input = raw_input.split()
+        if not split_input:
+            log("[HANDLER] Killing Execution. Wrong command used.")
+            return
+        first_word = split_input[0]
+        if first_word not in [command_name, command_alias]:
+            log("[HANDLER] Killing Execution. Wrong command used.")
             return
 
         # Remove the trigger and split the input into arguments
