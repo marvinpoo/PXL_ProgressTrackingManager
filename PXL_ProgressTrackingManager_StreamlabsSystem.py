@@ -139,6 +139,21 @@ def Execute(data):
         if not (raw_input.startswith(command_name) or (command_alias and raw_input.startswith(command_alias))):
             return
 
+        # Remove the trigger and split the input into arguments
+        if raw_input.startswith(command_name):
+            args = raw_input[len(command_name):].strip().split()
+        else:
+            args = raw_input[len(command_alias):].strip().split()
+        log("[COMMAND] Parsed arguments: {}".format(args))
+
+        # Ensure at least two arguments are provided (tracker name, command)
+        if len(args) < 2:
+            log("[COMMAND] Invalid arguments. Less than 2 provided.")
+            Parent.SendStreamMessage(
+                "Usage: {} [tracker_name] [command] [value]. Example: {} test new 100".format(command_name, command_name)
+            )
+            return
+
         # Check if user has the required role
         user = data.User
         allowed_roles = []
@@ -161,21 +176,6 @@ def Execute(data):
             log("[COMMAND] User '{}' does not have the required role.".format(user))
             Parent.SendStreamMessage(language_messages["no_permission"])  # Use the new language message
             return  # Explicitly return to stop further processing
-
-        # Remove the trigger and split the input into arguments
-        if raw_input.startswith(command_name):
-            args = raw_input[len(command_name):].strip().split()
-        else:
-            args = raw_input[len(command_alias):].strip().split()
-        log("[COMMAND] Parsed arguments: {}".format(args))
-
-        # Ensure at least two arguments are provided (tracker name, command)
-        if len(args) < 2:
-            log("[COMMAND] Invalid arguments. Less than 2 provided.")
-            Parent.SendStreamMessage(
-                "Usage: {} [tracker_name] [command] [value]. Example: {} test new 100".format(command_name, command_name)
-            )
-            return
 
         tracker_name = args[0].lower()  # First argument is the tracker name
         command = args[1].lower()      # Second argument is the command
