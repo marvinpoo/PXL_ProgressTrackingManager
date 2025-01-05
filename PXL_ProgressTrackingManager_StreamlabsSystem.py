@@ -107,279 +107,158 @@ def generate_tracker_html(tracker_name, current_progress, max_value):
 def Execute(data):
 
     if data.IsChatMessage():
+        # Check if user has the required role
+        user = data.User
+        allowed_roles = settings.get("allowed_roles", [])
+        broadcaster_group = settings.get("broadcaster_group", [])
+        final_allowed_roles = set(allowed_roles + broadcaster_group)  # Merge and remove duplicates
+
+        # Check if user has any of the allowed roles
+        has_permission = any(Parent.HasPermission(user, role, "") for role in final_allowed_roles)
+        if not has_permission:
+            log("[COMMAND] User '{}' does not have the required role.".format(user))
+            Parent.SendStreamMessage(language_messages["no_permission"])  # Use the new language message
+            return  # Explicitly return to stop further processing
 
         # Combine the trigger and parameters into a single command
-
         raw_input = data.Message.strip()
-
         log("[COMMAND] Received raw input: '{}'".format(raw_input))
 
-
-
         # Ensure the command starts with the trigger "!tracker"
-
         if not raw_input.startswith("!tracker"):
-
             log("[COMMAND] Invalid trigger.")
-
             return
-
-
 
         # Remove the trigger and split the input into arguments
-
         args = raw_input[len("!tracker"):].strip().split()
-
         log("[COMMAND] Parsed arguments: {}".format(args))
 
-
-
         # Ensure at least two arguments are provided (tracker name, command)
-
         if len(args) < 2:
-
             log("[COMMAND] Invalid arguments. Less than 2 provided.")
-
             Parent.SendStreamMessage(
-
                 "Usage: !tracker [tracker_name] [command] [value]. Example: !tracker test new 100"
-
             )
-
             return
 
-
-
         tracker_name = args[0].lower()  # First argument is the tracker name
-
         command = args[1].lower()      # Second argument is the command
-
         tracker_path = os.path.join(TRACKERS_DIR, "{}.json".format(tracker_name))
 
-
-
         # Initialize operation and value
-
         operation = None
-
         value = None
 
-
-
         # Handle new and similar commands that require a third argument
-
         if command == "new":
-
             if len(args) > 2:  # Check if a third argument exists
-
                 try:
-
                     value = int(args[2])  # Parse the value as an integer
-
                 except ValueError:
-
                     log("[COMMAND] Failed to parse value as integer: '{}'".format(args[2]))
-
                     Parent.SendStreamMessage(language_messages["invalid_value"])
-
                     return
-
             else:
-
                 log("[COMMAND] Missing value for 'new'.")
-
                 Parent.SendStreamMessage(language_messages["invalid_value"])
-
                 return
-
-
 
         # Handle commands with combined operation and value (+amount, -amount, =amount)
-
         elif command.startswith(("+", "-", "=")):
-
             operation = command[0]  # Extract operation
-
             try:
-
                 value = int(command[1:])  # Parse value as integer
-
             except ValueError:
-
                 log("[COMMAND] Failed to parse value for update: '{}'".format(command))
-
                 Parent.SendStreamMessage(language_messages["invalid_value"])
-
                 return
-
-
 
         lang = language_messages
 
-
-
         # Command: Create New Tracker
-
         if command == "new":
-
             log("[COMMAND] Create tracker: '{}' with max value: {}".format(tracker_name, value))
-
             if os.path.exists(tracker_path):
-
                 Parent.SendStreamMessage(lang["tracker_already_exists"].format(tracker=tracker_name))
-
                 return
-
             if value is None or value <= 0:
-
                 Parent.SendStreamMessage(lang["invalid_value"])
-
                 return
 
             # Create tracker with initial value 0
-
             tracker_data = {"current_progress": 0, "max_value": value}
-
             with open(tracker_path, "w") as f:
-
                 json.dump(tracker_data, f)
-
             generate_tracker_html(tracker_name, 0, value)
-
             Parent.SendStreamMessage(lang["tracker_created"].format(tracker=tracker_name, value=value))
 
-
-
         # Command: Reset Tracker
-
         elif command == "reset":
-
             log("[COMMAND] Reset tracker: '{}'".format(tracker_name))
-
             if not os.path.exists(tracker_path):
-
                 Parent.SendStreamMessage(lang["tracker_not_found"].format(tracker=tracker_name))
-
                 return
 
             with open(tracker_path, "r+") as f:
-
                 tracker_data = json.load(f)
-
                 tracker_data["current_progress"] = 0
-
                 f.seek(0)
-
                 json.dump(tracker_data, f)
-
                 f.truncate()
-
             generate_tracker_html(tracker_name, 0, tracker_data["max_value"])
-
             Parent.SendStreamMessage(lang["tracker_reset"].format(tracker=tracker_name))
 
-
-
         # Command: Delete Tracker
-
         elif command == "del":
-
             log("[COMMAND] Delete tracker: '{}'".format(tracker_name))
-
             if not os.path.exists(tracker_path):
-
                 Parent.SendStreamMessage(lang["tracker_not_found"].format(tracker=tracker_name))
-
                 return
 
-
-
             # Delete tracker JSON file
-
             os.remove(tracker_path)
-
             log("[DELETE] JSON file deleted for tracker: '{}'".format(tracker_name))
 
-
-
             # Delete tracker HTML file
-
             html_file = os.path.join(TRACKERS_DIR, "{}.html".format(tracker_name))
-
             if os.path.exists(html_file):
-
                 os.remove(html_file)
-
                 log("[DELETE] HTML file deleted for tracker: '{}'".format(tracker_name))
-
             else:
-
                 log("[DELETE] No HTML file found for tracker: '{}'".format(tracker_name))
-
-
-
             Parent.SendStreamMessage(lang["tracker_deleted"].format(tracker=tracker_name))
 
-
-
         # Command: Update Tracker
-
         elif operation in ["+", "-", "="]:
-
             log("[COMMAND] Update tracker: '{}' with operation: '{}' and value: {}".format(tracker_name, operation, value))
-
             if not os.path.exists(tracker_path):
-
                 Parent.SendStreamMessage(lang["tracker_not_found"].format(tracker=tracker_name))
-
                 return
 
             if value is None:
-
                 Parent.SendStreamMessage(lang["invalid_value"])
-
                 return
 
             with open(tracker_path, "r+") as f:
-
                 tracker_data = json.load(f)
-
                 if operation == "+":
-
                     tracker_data["current_progress"] += value
-
                 elif operation == "-":
-
                     tracker_data["current_progress"] = max(0, tracker_data["current_progress"] - value)
-
                 elif operation == "=":
-
                     tracker_data["current_progress"] = value
-
                 tracker_data["current_progress"] = min(tracker_data["current_progress"], tracker_data["max_value"])
-
                 f.seek(0)
-
                 json.dump(tracker_data, f)
-
                 f.truncate()
-
             generate_tracker_html(tracker_name, tracker_data["current_progress"], tracker_data["max_value"])
-
             Parent.SendStreamMessage(lang["tracker_updated"].format(
-
                 tracker=tracker_name, value=tracker_data["current_progress"]
-
             ))
 
-
-
         # Command: Invalid Command
-
         else:
-
             log("[COMMAND] Invalid command received: '{}'".format(command))
-
             Parent.SendStreamMessage(lang["invalid_command"])
 
 # ---------------------------------------

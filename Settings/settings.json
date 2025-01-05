@@ -1,3 +1,5 @@
 {
-    "language": "en"
+    "language": "en",
+    "allowed_roles": ["Moderator"],
+    "broadcaster_group": ["Broadcaster"]
 }

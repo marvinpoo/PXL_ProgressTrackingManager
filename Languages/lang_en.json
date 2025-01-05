@@ -1,4 +1,5 @@
 {
+    "language_name": "English",
     "tracker_created": "Tracker '{tracker}' created with a max value of {value}.",
     "tracker_reset": "Tracker '{tracker}' has been reset to 0.",
     "tracker_updated": "Tracker '{tracker}' updated. Current progress: {value}.",
@@ -6,5 +7,6 @@
     "tracker_already_exists": "Tracker '{tracker}' already exists.",
     "tracker_not_found": "Tracker '{tracker}' does not exist.",
     "invalid_value": "Invalid value. Please provide a valid number.",
-    "invalid_command": "Invalid command. Available: neu, reset, del, +X, -X, =VALUE."
+    "invalid_command": "Invalid command. Available: neu, reset, del, +X, -X, =VALUE.",
+    "no_permission": "You do not have permission to use this command."
 }

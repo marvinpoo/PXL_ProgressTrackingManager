@@ -1,4 +1,5 @@
 {
+    "language_name": "Deutsch",
     "tracker_created": "Tracker '{tracker}' wurde mit einem Maximalwert von {value} erstellt.",
     "tracker_reset": "Tracker '{tracker}' wurde auf 0 zurückgesetzt.",
     "tracker_updated": "Tracker '{tracker}' aktualisiert. Aktueller Fortschritt: {value}.",
@@ -6,5 +7,6 @@
     "tracker_already_exists": "Tracker '{tracker}' existiert bereits.",
     "tracker_not_found": "Tracker '{tracker}' existiert nicht.",
     "invalid_value": "Ungültiger Wert. Bitte geben Sie eine gültige Zahl an.",
-    "invalid_command": "Ungültiger Befehl. Verfügbar: neu, reset, del, +X, -X, =WERT."
+    "invalid_command": "Ungültiger Befehl. Verfügbar: neu, reset, del, +X, -X, =WERT.",
+    "no_permission": "Du habst keine Berechtigung, diesen Befehl zu verwenden."
 }
