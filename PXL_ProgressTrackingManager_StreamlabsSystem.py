@@ -12,7 +12,7 @@ ScriptName = "PXL_PTM: Progress Tracking Manager"
 Website = "http://localhost:8000"
 Description = "This script tracks your progress and is capable of displaying it in a OBS Browser Source."
 Creator = "dotPixelmonarch"
-Version = "v0.1.0-beta"
+Version = "v0.1.0"
 
 # ---------------------------------------
 # Global Variables
@@ -113,13 +113,14 @@ def generate_tracker_html(tracker_name, current_progress, max_value):
     html_content = html_content.replace("{tracker_name}", tracker_name)
     html_content = html_content.replace("{tracker_value}", str(current_progress))
     html_content = html_content.replace("{progress_percent}", "%.2f" % float(progress))
+    html_content = html_content.replace("{max_value}", str(max_value)) 
 
     # Write to the output file
     with codecs.open(html_file, "w", "utf-8-sig") as output:
         output.write(html_content)
 
     # Log progress
-    log("[HTML] Generated HTML for tracker: %s (value: %d, progress: %.2f%%)" % (tracker_name, current_progress, progress))
+    log("[HTML] Generated HTML for tracker: %s (value: %d, max: %d, progress: %.2f%%)" % (tracker_name, current_progress, max_value, progress))
     return html_file
 
 # ---------------------------------------
